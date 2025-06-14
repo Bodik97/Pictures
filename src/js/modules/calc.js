@@ -4,6 +4,9 @@ const calc = (size, material, options, promocode, result) => {
           optionsBlock = document.querySelector(options),
           promocodeBlock = document.querySelector(promocode),
           resultBlock = document.querySelector(result);
+console.log(options);
+
+console.log(optionsBlock);
 
     let sum = 0;
 

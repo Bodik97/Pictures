@@ -1822,6 +1822,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/showMoreStyles */ "./src/js/modules/showMoreStyles.js");
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
 /* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
+/* harmony import */ var _modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pictureSize */ "./src/js/modules/pictureSize.js");
+
 
 
 
@@ -1843,6 +1845,7 @@ window.addEventListener('DOMContentLoaded', () => {
   Object(_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
   Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])('#size', '#material', '#options', '.promocode', '.calc-price');
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
+  Object(_modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__["default"])('.sizes-block');
 });
 
 /***/ }),
@@ -1862,6 +1865,8 @@ const calc = (size, material, options, promocode, result) => {
         optionsBlock = document.querySelector(options),
         promocodeBlock = document.querySelector(promocode),
         resultBlock = document.querySelector(result);
+  console.log(options);
+  console.log(optionsBlock);
   let sum = 0;
 
   const calcFunc = () => {
@@ -2261,6 +2266,54 @@ const modals = () => {
 
 /***/ }),
 
+/***/ "./src/js/modules/pictureSize.js":
+/*!***************************************!*\
+  !*** ./src/js/modules/pictureSize.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const pictureSize = imgSelector => {
+  console.log('func start');
+  const blocks = document.querySelectorAll(imgSelector);
+
+  function showImg(block) {
+    const img = block.querySelector('img'); //something png => something-1.png
+
+    img.src = img.src.slice(0, -4) + '-1.png';
+    block.querySelectorAll('p:not(.sisez-hit)').forEach(p => {
+      p.style.display = 'none';
+    });
+  }
+
+  function hideImg(block) {
+    const img = block.querySelector('img'); //something-1.png => ssomething png
+
+    img.src = img.src.slice(0, -6) + '.png';
+    block.querySelectorAll('p:not(.sisez-hit)').forEach(p => {
+      p.style.display = 'block';
+    });
+  }
+
+  console.log('block');
+  blocks.forEach(block => {
+    block.addEventListener('mouseover', () => {
+      console.log('mouseover');
+      showImg(block);
+    });
+    block.addEventListener('mouseout', () => {
+      console.log('mouseout ');
+      hideImg(block);
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (pictureSize);
+
+/***/ }),
+
 /***/ "./src/js/modules/showMoreStyles.js":
 /*!******************************************!*\
   !*** ./src/js/modules/showMoreStyles.js ***!
@@ -2287,11 +2340,16 @@ const showMoreStyles = (trigger, wrapper) => {
   // });
 
   btn.addEventListener('click', function () {
-    Object(_services_requests__WEBPACK_IMPORTED_MODULE_0__["getResource"])('assets/db.json').then(res => createCards(res.styles)).catch(error => console.log(error));
+    console.log("click");
+    Object(_services_requests__WEBPACK_IMPORTED_MODULE_0__["getResource"])('assets/db.json').then(res => {
+      const data = JSON.parse(res);
+      createCards(data.styles);
+    }).catch(error => console.log(error));
     this.remove();
   });
 
   function createCards(response) {
+    console.log(response);
     response.forEach(({
       src,
       title,

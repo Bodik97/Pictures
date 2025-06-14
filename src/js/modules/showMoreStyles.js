@@ -2,6 +2,8 @@ import {getResource} from '../services/requests';
 
 const showMoreStyles = (trigger, wrapper) => {
     const btn = document.querySelector(trigger);
+    
+    
 
     // cards.forEach(card => {
     //     card.classList.add('animated', 'fadeInUp');
@@ -17,14 +19,20 @@ const showMoreStyles = (trigger, wrapper) => {
     // });
 
     btn.addEventListener('click', function() {
+        console.log("click");
         getResource('assets/db.json')
-            .then(res => createCards(res.styles))
+            .then(res => {
+                const data = JSON.parse(res)
+                createCards(data.styles)
+            })
             .catch(error => console.log(error));
 
         this.remove();
     });
 
     function createCards(response) {
+        console.log(response);
+        
         response.forEach(({src, title, link}) => {
             let card = document.createElement('div');
 
